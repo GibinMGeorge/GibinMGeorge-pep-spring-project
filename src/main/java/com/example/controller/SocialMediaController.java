@@ -52,7 +52,7 @@ public class SocialMediaController {
     @PostMapping("/messages")
     public ResponseEntity<Message> createMessage(@RequestBody Message message) {
         Message createdMessage = messageService.createMessage(message);
-        return new ResponseEntity<>(createdMessage, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdMessage, HttpStatus.OK);
     }
 
     // Endpoint to retrieve all messages
