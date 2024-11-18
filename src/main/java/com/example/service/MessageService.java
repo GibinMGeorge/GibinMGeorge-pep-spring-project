@@ -1,6 +1,8 @@
 package com.example.service;
 
+import com.example.entity.Account;
 import com.example.entity.Message;
+import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,17 +17,28 @@ import java.util.Optional;
 public class MessageService {
 
     private final MessageRepository messageRepository;
+    private final AccountRepository accountRepository; 
 
     @Autowired
-    public MessageService(MessageRepository messageRepository) {
+    public MessageService(MessageRepository messageRepository, AccountRepository accountRepository) {
         this.messageRepository = messageRepository;
+        this.accountRepository = accountRepository; // Initialize the accountRepository
     }
 
     // Method to create a new message
     public Message createMessage(Message message) {
+        // Ensure the message is valid (You may do additional validation here)
         if (message.getMessageText() == null || message.getMessageText().isEmpty()) {
-            throw new IllegalArgumentException("Message text cannot be null or empty.");
+            throw new IllegalArgumentException("Message text cannot be empty.");
         }
+        
+        // Find the user by ID to check if they exist
+        Optional<Account> accountOptional = accountRepository.findById(message.getPostedBy());
+        if (!accountOptional.isPresent()) {
+            throw new IllegalArgumentException("User not found.");
+        }
+
+        // If everything is valid, save and return the message
         return messageRepository.save(message);
     }
 

@@ -59,4 +59,9 @@ public class AccountService {
             return false;
         }
     }
+
+    public boolean existsByUsername(String username) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'existsByUsername'");
+    }
 }

@@ -15,7 +15,7 @@ import java.util.List;
  * Controller for handling social media-related endpoints.
  */
 @RestController
-@RequestMapping("/api") // Base URL for the endpoints
+// @RequestMapping("/api") // Base URL for the endpoints
 public class SocialMediaController {
 
     private final AccountService accountService;
@@ -28,10 +28,10 @@ public class SocialMediaController {
     }
 
     // Endpoint to create a new account
-    @PostMapping("/accounts")
+    @PostMapping("/register")
     public ResponseEntity<Account> createAccount(@RequestBody Account account) {
         Account createdAccount = accountService.createAccount(account);
-        return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdAccount, HttpStatus.OK);
     }
 
     // Endpoint to retrieve all accounts
