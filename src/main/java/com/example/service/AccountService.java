@@ -26,6 +26,11 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
+    // Method to retrieve an account by username
+    public Account getAccountByUsername(String username) {
+        return accountRepository.findByUsername(username);
+    }
+    
     // Method to retrieve all accounts
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();

@@ -46,7 +46,24 @@ public class SocialMediaController {
         }
     }
 
-
+    // Endpoint for login
+    @PostMapping("/login")
+    public ResponseEntity<Account> login(@RequestBody Account loginRequest) {
+        try {
+            // Check if the account exists by username
+            Account account = accountService.getAccountByUsername(loginRequest.getUsername());
+            if (account != null && account.getPassword().equals(loginRequest.getPassword())) {
+                return new ResponseEntity<>(account, HttpStatus.OK); // Return 200 if login is successful
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); // Return 401 if username or password is invalid
+            }
+        } catch (Exception e) {
+            // Log the error and return a 500 status for unexpected errors
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
     // Endpoint to retrieve all accounts
     @GetMapping("/accounts")
     public ResponseEntity<List<Account>> getAllAccounts() {
