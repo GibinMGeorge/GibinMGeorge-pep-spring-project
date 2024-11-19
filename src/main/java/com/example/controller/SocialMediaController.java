@@ -138,4 +138,19 @@ public class SocialMediaController {
         Account account = accountService.updateAccount(id, updatedAccount);
         return account != null ? new ResponseEntity<>(account, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    // Endpoint to update a message by ID
+    @PatchMapping("/messages/{id}")
+    public ResponseEntity<?> updateMessage(@PathVariable Integer id, @RequestBody Message updatedMessage) {
+        try {
+            Message updated = messageService.updateMessage(id, updatedMessage);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

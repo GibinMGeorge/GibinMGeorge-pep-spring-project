@@ -65,11 +65,20 @@ public class MessageService {
         Optional<Message> messageOptional = messageRepository.findById(id);
         if (messageOptional.isPresent()) {
             Message existingMessage = messageOptional.get();
+    
+            // Validate the new message text
+            if (updatedMessage.getMessageText() == null || updatedMessage.getMessageText().trim().isEmpty()) {
+                throw new IllegalArgumentException("Message text cannot be empty.");
+            }
+            if (updatedMessage.getMessageText().length() > 255) {
+                throw new IllegalArgumentException("Message text cannot exceed 255 characters.");
+            }
+    
+            // Update the message text and save changes
             existingMessage.setMessageText(updatedMessage.getMessageText());
-            existingMessage.setTimePostedEpoch(updatedMessage.getTimePostedEpoch());
             return messageRepository.save(existingMessage);
         } else {
-            throw new RuntimeException("Message not found with ID: " + id);
+            throw new IllegalArgumentException("Message not found.");
         }
     }
 
