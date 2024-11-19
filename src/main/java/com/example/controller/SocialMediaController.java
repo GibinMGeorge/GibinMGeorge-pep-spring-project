@@ -80,9 +80,19 @@ public class SocialMediaController {
 
     // Endpoint to create a new message
     @PostMapping("/messages")
-    public ResponseEntity<Message> createMessage(@RequestBody Message message) {
-        Message createdMessage = messageService.createMessage(message);
-        return new ResponseEntity<>(createdMessage, HttpStatus.OK);
+    public ResponseEntity<?> createMessage(@RequestBody Message message) {
+        try {
+            // Create message and return the result
+            Message createdMessage = messageService.createMessage(message);
+            return new ResponseEntity<>(createdMessage, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            // Return 400 status for validation errors
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // Return 500 status for unexpected errors
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // Endpoint to retrieve all messages
@@ -98,6 +108,7 @@ public class SocialMediaController {
         List<Message> messages = messageService.getMessagesByAccountId(accountId);
         return messages != null ? new ResponseEntity<>(messages, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
 
     // Endpoint to delete a message by ID
     @DeleteMapping("/messages/{id}")

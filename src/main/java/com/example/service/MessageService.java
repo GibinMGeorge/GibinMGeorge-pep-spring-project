@@ -17,40 +17,37 @@ import java.util.Optional;
 public class MessageService {
 
     private final MessageRepository messageRepository;
-    private final AccountRepository accountRepository; 
+    private final AccountRepository accountRepository;
 
     @Autowired
     public MessageService(MessageRepository messageRepository, AccountRepository accountRepository) {
         this.messageRepository = messageRepository;
-        this.accountRepository = accountRepository; // Initialize the accountRepository
+        this.accountRepository = accountRepository;
     }
 
     // Method to create a new message
     public Message createMessage(Message message) {
-        // Ensure the message is valid (You may do additional validation here)
-        if (message.getMessageText() == null || message.getMessageText().isEmpty()) {
+        // Validate message text
+        if (message.getMessageText() == null || message.getMessageText().trim().isEmpty()) {
             throw new IllegalArgumentException("Message text cannot be empty.");
         }
-        
-        // Find the user by ID to check if they exist
+        if (message.getMessageText().length() > 255) {
+            throw new IllegalArgumentException("Message text cannot exceed 255 characters.");
+        }
+
+        // Validate user existence
         Optional<Account> accountOptional = accountRepository.findById(message.getPostedBy());
         if (!accountOptional.isPresent()) {
             throw new IllegalArgumentException("User not found.");
         }
 
-        // If everything is valid, save and return the message
+        // Save and return the message
         return messageRepository.save(message);
     }
 
     // Method to retrieve all messages
     public List<Message> getAllMessages() {
         return messageRepository.findAll();
-    }
-
-    // Method to retrieve a message by ID
-    public Message getMessageById(Integer id) {
-        Optional<Message> messageOptional = messageRepository.findById(id);
-        return messageOptional.orElseThrow(() -> new RuntimeException("Message not found with ID: " + id));
     }
 
     // Method to retrieve all messages posted by a specific account
