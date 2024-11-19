@@ -61,7 +61,7 @@ public class MessageService {
     }
 
     // Method to update a message by ID
-    public Message updateMessage(Integer id, Message updatedMessage) {
+    public int updateMessage(Integer id, Message updatedMessage) {
         Optional<Message> messageOptional = messageRepository.findById(id);
         if (messageOptional.isPresent()) {
             Message existingMessage = messageOptional.get();
@@ -76,7 +76,8 @@ public class MessageService {
     
             // Update the message text and save changes
             existingMessage.setMessageText(updatedMessage.getMessageText());
-            return messageRepository.save(existingMessage);
+            messageRepository.save(existingMessage);
+            return 1; // Indicate one row modified
         } else {
             throw new IllegalArgumentException("Message not found.");
         }

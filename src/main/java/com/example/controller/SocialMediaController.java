@@ -143,8 +143,8 @@ public class SocialMediaController {
     @PatchMapping("/messages/{id}")
     public ResponseEntity<?> updateMessage(@PathVariable Integer id, @RequestBody Message updatedMessage) {
         try {
-            Message updated = messageService.updateMessage(id, updatedMessage);
-            return new ResponseEntity<>(updated, HttpStatus.OK);
+            int rowsUpdated = messageService.updateMessage(id, updatedMessage);
+            return new ResponseEntity<>(rowsUpdated, HttpStatus.OK); // Return number of rows updated
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {

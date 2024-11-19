@@ -10,6 +10,6 @@ import java.util.List;
 public interface MessageRepository extends JpaRepository<Message, Integer> {
 
     // query method to find messages postedBy account ID
-    List<Message> findByPostedBy(Integer postedBy);
+    List<Message> findByPostedBy(Integer accountId);
 
 }
