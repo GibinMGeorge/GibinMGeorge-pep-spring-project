@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     // Finds an account by username
-    // Account findByUsername(String username);
+    Account findByUsername(String username);
 
     // Checks if an account exists by username
-    // boolean existsByUsername(String username);
+    boolean existsByUsername(String username);
 }

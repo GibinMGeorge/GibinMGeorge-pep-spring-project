@@ -30,9 +30,22 @@ public class SocialMediaController {
     // Endpoint to create a new account
     @PostMapping("/register")
     public ResponseEntity<Account> createAccount(@RequestBody Account account) {
-        Account createdAccount = accountService.createAccount(account);
-        return new ResponseEntity<>(createdAccount, HttpStatus.OK);
+        try {
+            // Check if the username already exists
+            if (accountService.existsByUsername(account.getUsername())) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT); // Return 409 if username exists
+            }
+
+            // If the username does not exist, create the account
+            Account createdAccount = accountService.createAccount(account);
+            return new ResponseEntity<>(createdAccount, HttpStatus.OK);
+        } catch (Exception e) {
+            // Log the error and return a 500 status for unexpected errors
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     // Endpoint to retrieve all accounts
     @GetMapping("/accounts")
