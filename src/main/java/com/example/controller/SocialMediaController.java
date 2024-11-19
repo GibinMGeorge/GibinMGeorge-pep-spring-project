@@ -109,6 +109,15 @@ public class SocialMediaController {
         return messages != null ? new ResponseEntity<>(messages, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    // Endpoint to retrieve a message by ID
+    @GetMapping("/messages/{id}")
+    public ResponseEntity<Message> getMessageById(@PathVariable Integer id) {
+        Message message = messageService.getMessageById(id);
+        return message != null 
+            ? new ResponseEntity<>(message, HttpStatus.OK) 
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 
     // Endpoint to delete a message by ID
     @DeleteMapping("/messages/{id}")

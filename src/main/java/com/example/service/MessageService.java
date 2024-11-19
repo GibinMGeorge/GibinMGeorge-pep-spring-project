@@ -50,6 +50,11 @@ public class MessageService {
         return messageRepository.findAll();
     }
 
+    // Method to retrieve a message by Id
+    public Message getMessageById(Integer id) {
+        return messageRepository.findById(id).orElse(null);
+    }
+    
     // Method to retrieve all messages posted by a specific account
     public List<Message> getMessagesByAccountId(Integer accountId) {
         return messageRepository.findByPostedBy(accountId);
