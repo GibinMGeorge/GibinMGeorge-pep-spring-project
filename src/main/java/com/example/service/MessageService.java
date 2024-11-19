@@ -69,12 +69,13 @@ public class MessageService {
     }
 
     // Method to delete a message by ID
-    public boolean deleteMessageById(Integer id) {
+    public int deleteMessageById(Integer id) {
         if (messageRepository.existsById(id)) {
             messageRepository.deleteById(id);
-            return true;
+            return 1; // Successfully deleted one row
         } else {
-            throw new RuntimeException("Message not found with ID: " + id);
+            return 0; // No rows were deleted as the message ID doesn't exist
         }
     }
+
 }

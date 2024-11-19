@@ -112,9 +112,15 @@ public class SocialMediaController {
 
     // Endpoint to delete a message by ID
     @DeleteMapping("/messages/{id}")
-    public ResponseEntity<Void> deleteMessage(@PathVariable Integer id) {
-        boolean isDeleted = messageService.deleteMessageById(id);
-        return isDeleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> deleteMessage(@PathVariable Integer id) {
+        int rowsDeleted = messageService.deleteMessageById(id);
+    
+        // Return appropriate response
+        if (rowsDeleted > 0) {
+            return ResponseEntity.ok(rowsDeleted); // Message was found and deleted, return count
+        } else {
+            return ResponseEntity.ok(""); // Message not found, return empty body
+        }
     }
 
     // Endpoint to update account information
