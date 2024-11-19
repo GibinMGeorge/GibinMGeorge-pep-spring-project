@@ -115,7 +115,7 @@ public class SocialMediaController {
         Message message = messageService.getMessageById(id);
         return message != null 
             ? new ResponseEntity<>(message, HttpStatus.OK) 
-            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            : new ResponseEntity<>(null, HttpStatus.OK);
     }
 
 
